@@ -1,0 +1,168 @@
+<section class="section coming-soon header-registro image-registro" data-section="section3">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-xs-12">
+                <div class="continer centerIt">
+                    <div class="col-sm-8 offset-sm-2">
+                        <h4 class="mb-2 text-center">Regístrate y compite para representar a Chile en los <em>X Games</em> del
+                            próximo año</h4>
+                        <h4 class="text-center my-4">Ya tenemos</h4>
+                        <div class="counter">
+                            <div class="num mx-auto">
+                                <div class="value">{{totalParticipantes}}</div>
+                                <span>Participantes</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="menu" class="main-nav text-center">
+                    <ul class="main-menu">
+                        <li><a href="#section6">¡Quiero Participar!</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="section contact" data-section="section6">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="section-heading">
+                    <h2>Registro de Participantes</h2>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <form class="form-participante shadow-lg">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <fieldset>
+                                <input name="email" type="email" class="form-control" maxlength="50"
+                                    placeholder="Tu Email" />
+                            </fieldset>
+                        </div>
+                        <div class="col-md-6">
+                            <fieldset>
+                                <input name="nombre" type="text" class="form-control" maxlength="25"
+                                    placeholder="Tu Nombre" />
+                            </fieldset>
+                        </div>
+                        <div class="col-md-6">
+                            <fieldset>
+                                <input name="password" type="password" class="form-control" maxlength="25"
+                                    placeholder="Tu Contraseña" />
+                            </fieldset>
+                        </div>
+                        <div class="col-md-6">
+                            <fieldset>
+                                <input name="password2" type="password" class="form-control" maxlength="25"
+                                    placeholder="Repite la Contraseña" />
+                            </fieldset>
+                        </div>
+                        <div class="col-md-6">
+                            <fieldset>
+                                <input name="anos_experiencia" type="number" class="form-control" min="0" max="30"
+                                    placeholder="Tus Años de Experiencia" />
+                            </fieldset>
+                        </div>
+                        <div class="col-md-6">
+                            <fieldset>
+                                <input name="especialidad" type="text" class="form-control" maxlength="50"
+                                    placeholder="Tu Especialidad" />
+                            </fieldset>
+                        </div>
+
+                        <div class="col-md-12">
+                            <fieldset>
+                                <input id="foto" name="foto" type="file" accept="image/*" class="form-control" />
+                            </fieldset>
+                        </div>
+                        <div class="col-md-12">
+                            <fieldset class="text-center">
+                                <button type="submit" id="form-submit" class="button">Inscribirme</button>
+                            </fieldset>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    function validateForm() {
+        let email = $("input[name=email]");
+        let nombre = $("input[name=nombre]");
+        let password = $("input[name=password]");
+        let password2 = $("input[name=password2]");
+        let anos_experiencia = $("input[name=anos_experiencia]");
+        let especialidad = $("input[name=especialidad]");
+        let foto = $("input[name=foto]");
+
+        if (!email.val() || !nombre.val() || !password.val() || !password2.val() || !anos_experiencia.val() || !especialidad.val() || !foto.val()) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Datos Incompletos',
+                text: "Ingrese todos los datos, por favor.",
+            });
+            return false;
+        }
+
+        if (password.val() != password2.val()) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Contraseñas no coinciden',
+                text: "Las contraseñas deben ser iguales",
+            });
+            return false;
+        }
+
+        if (anos_experiencia.val() < 0 || anos_experiencia.val() > 30) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Años experiencia inválido',
+                text: "Ingrese una cantidad válida en años de experiencia [0 - 30]",
+            });
+            return false;
+        }
+        return true;
+    }
+
+    $('form').submit(function (event) {
+        event.preventDefault();
+        let foto = document.querySelector('#foto');
+
+        if (validateForm()) {
+            let formData = new FormData();
+            formData.append("foto", foto.files[0]);
+            formData.append("email", $("input[name=email]").val());
+            formData.append("nombre", $("input[name=nombre]").val());
+            formData.append("password", $("input[name=password]").val());
+            formData.append("anos_experiencia", $("input[name=anos_experiencia]").val());
+            formData.append("especialidad", $("input[name=especialidad]").val());
+
+            axios.post("/participantes", formData, {
+                headers: { 'Content-Type': 'multipart/form-data' }
+            })
+                .then((mensaje) => {
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: 'Usuario Registrado',
+                        text: mensaje.data,
+                        showConfirmButton: true,
+                    }).then(()=> {
+                        location.href = "/Login";
+                    })
+                })
+                .catch(({ response }) => {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Error',
+                        text: response.data,
+                    });
+                    console.log(response.data);
+                });
+        }
+    })
+
+</script>

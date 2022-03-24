@@ -1,0 +1,81 @@
+<section class="section coming-soon image-login" data-section="section3">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-7 col-xs-12">
+                <div class="continer centerIt">
+                    <div>
+                        <h4 class="mb-2 text-center"><em>Inicia sesión</em> si necesitas <br> modificar tus datos</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="right-content">
+                    <div class="top-content">
+                        <h6 class="h3">¿Ya estás inscrito? <br>Inicia Sesión</h6>
+                    </div>
+                    <form>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <fieldset>
+                                    <input name="email" type="text" class="form-control" value="admin@skatepark.com" placeholder="Tu Email" />
+                                </fieldset>
+                            </div>
+                            <div class="col-md-12">
+                                <fieldset>
+                                    <input name="password" type="password" class="form-control" value="admin" placeholder="Tu Contraseña"/>
+                                </fieldset>
+                            </div>
+                            <div class="p-2 invalid-feedback bg-light"></div>
+                            <div class="col-md-12">
+                                <fieldset>
+                                    <button id="form-submit" type="submit" class="button">Ingresar</button>
+                                </fieldset>
+                            </div>
+                        </div>
+                    </form>
+                    <p class="text-light text-center">¿Aún no tienes cuenta? <a href="/Registro">Regístrate</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    $('input').on('keydown', function() {
+        $('.invalid-feedback').hide();
+    })
+
+    function validateForm() {
+        let email = $("input[name=email]").val();
+        let password = $("input[name=password]").val();
+
+        if (!email || !password) {
+            $('.invalid-feedback').text("Complete todos los datos").show();
+            return false;
+        }
+        return true;
+    }
+
+    $('form').submit(function (event) {
+        event.preventDefault();
+
+        if (validateForm()) {
+            axios.post("/autenticar", {
+                email: $("input[name=email]").val(),
+                password: $("input[name=password]").val(),
+            })
+            .then((redirect) => {
+                console.log(redirect.data);
+                location.href = redirect.data;
+            })
+            .catch(({ response }) => {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Credenciales Inválidas',
+                    text: response.data,
+                })
+                console.log(response.data);
+            });
+        }
+    })
+</script>

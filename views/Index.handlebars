@@ -1,0 +1,41 @@
+<!-- ***** Hero section ***** -->
+<section class="section main-banner" id="top" data-section="section1">
+    <video autoplay muted loop id="bg-video">
+        <source src="skate-slomo.mp4" type="video/mp4" />
+    </video>
+
+    <div class="video-overlay header-text">
+        <div class="caption">
+            <p class="text-center bold-white-font small text-uppercase">Ilustre Municipalidad de Santiago <br>
+            <em>Te invita a</em></p>
+            {{!-- <hr class="w-25 bg-dark"> --}}
+            <h2><em>Competencia de </em>skate</h2>
+            
+            <div class="main-button">
+                <div class="scroll-to-section"><a href="#section2">Ver particiantes</a></div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- ***** End Hero Section ***** -->
+
+<section class="section participantes" data-section="section2">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="section-heading">
+                    <h2>Participantes Registrados</h2>
+                </div>
+            </div>
+            <div class="col-md-12">
+                {{#unless participantes}}
+                    <p class="p-5 mb-3 text-center bg-dark text-light">No hay participantes registrados aún</p>
+                {{/unless}}
+
+                {{#if participantes}}
+                    {{> tablaParticipantes}}
+                {{/if}}
+            </div>
+        </div>
+    </div>
+</section>
