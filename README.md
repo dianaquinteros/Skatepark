@@ -15,7 +15,7 @@ el estado de su solicitud.
 </ul>
 
 <b>Tecnologías Utilizadas:</b>
-<p>Node.js, Framework Express, Handlebars, JWT, Express-fileupload, PostgreSQL, HTML5, CSS3, Bootstrap v5, jQuery.</p>
+<p>Node.js, Framework Express, Handlebars, JWT, Express-fileupload, PostgreSQL, HTML5, CSS3, Bootstrap v5, jQuery, SweetAlert2.</p>
 
 <br>
 <figure>
